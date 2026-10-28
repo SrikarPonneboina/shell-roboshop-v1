@@ -7,6 +7,7 @@ hostedzone_id="Z064550534ZXEXGIQB3I4"
 
 for instance in $@
 do
+echo "creating $instance instance"
 instance_id=$(
     aws ec2 run-instances \
     --image-id $ami_id \
@@ -16,23 +17,24 @@ instance_id=$(
     --query "Instances[].InstanceId" \
     --output text
 )
-
+echo "instance created successfully"
 echo "$instance ID: $instance_id"
 
 if [ $instance != "frontend" ]; then
-    IP=$( aws ec2 describe-instances --instance-ids $instance_id \
+    IP=$(aws ec2 describe-instances --instance-ids $instance_id \
              --query 'Reservations[].Instances[].PrivateIpAddress' --output text
     )
     r53_record="${instance}.${domain_name}"
 else
-    IP=$( aws ec2 describe-instances --instance-ids $instance_id \
+    IP=$(aws ec2 describe-instances --instance-ids $instance_id \
              --query 'Reservations[].Instances[].PublicIpAddress' --output text
         )
-        r53_record="${domain_name}"
+    r53_record="${domain_name}"
 fi
 
 # update R53 record
 echo "Record: ${r53_record}"
+echo "Updating R53 record"
     aws route53 change-resource-record-sets \
     --hosted-zone-id $hostedzone_id \
     --change-batch '{
