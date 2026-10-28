@@ -9,7 +9,8 @@ hostedzone_id="Z064550534ZXEXGIQB3I4"
 
 for instance in $@
 do 
-instance_id=$(
+read -r instance_id PrivateIp PublicIp <<EOF
+$(
     aws ec2 run-instances \
     --image-id $ami_id \
     --instance-type $instance_type \
@@ -19,8 +20,8 @@ instance_id=$(
     --output text
 )
 echo "$instance ID: $instance_id"
-echo "PrivateIp = $PrivateIpAddress"
-echo "PublicIp = $PublicIpAddress"
+echo "PrivateIp = $PrivateIp"
+echo "PublicIp = $PublicIp"
 
 done
 
