@@ -22,7 +22,5 @@ echo "$instance ID: $instance_id"
 echo "PrivateIp = $PrivateIpAddress"
 echo "PublicIp = $PublicIpAddress"
 
-fi
-
 done
 
