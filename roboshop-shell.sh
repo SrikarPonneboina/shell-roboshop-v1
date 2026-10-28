@@ -20,8 +20,7 @@ $(
     --output text
 )
 echo "$instance ID: $instance_id"
-echo "PrivateIp = $PrivateIp"
-echo "PublicIp = $PublicIp"
+echo "PrivateIp: $PrivateIp"
+echo "PublicIp: $PublicIp"
 
 done
-
