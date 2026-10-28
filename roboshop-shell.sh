@@ -19,6 +19,7 @@ $(
     --query "Instances[].[InstanceId, PrivateIpAddress, PublicIpAddress]" \
     --output text
 )
+EOF
 echo "$instance ID: $instance_id"
 echo "PrivateIp: $PrivateIp"
 echo "PublicIp: $PublicIp"
