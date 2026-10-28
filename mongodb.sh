@@ -26,7 +26,7 @@ validate(){
     fi
 }
 
-cp mongodb.repo /etc/yum.repo.d/mongo.repo 
+cp mongodb.repo /etc/yum.repo.d/mongodb.repo 
 validate $? "Adding mongo repo"
 
 dnf install mongodb-org -y &>> $logs_file
