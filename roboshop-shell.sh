@@ -23,7 +23,7 @@ $(
 EOF
 echo "$instance ID: $instance_id"
 echo "PrivateIp: $PrivateIp"
-sleep 20 &
+sleep 20 
 echo "sleeping for 20seconds.."
 echo "PublicIp: $PublicIp"
 
