@@ -11,7 +11,7 @@ N="\e[0m"
 mkdir -p $logs_folder
 
 if [ $user_id -ne 0 ]; then
-    echo "${R}ERROR${N}: please run with root or sudo access" 
+    echo -e "${R}ERROR${N}: please run with root or sudo access" 
     exit 1
 fi
 
@@ -19,10 +19,10 @@ validate(){
     exit_status=$1
     description=$2
     if [ $exit_status -ne 0 ]; then
-        echo "${description}..${R}FAILED${N}" | tee -a $logs_file
+        echo -e "${description}..${R}FAILED${N}" | tee -a $logs_file
         exit 1
     else
-        echo "${description}..${G}SUCCESS${N}" | tee -a $logs_file
+        echo -e "${description}..${G}SUCCESS${N}" | tee -a $logs_file
     fi
 }
 
