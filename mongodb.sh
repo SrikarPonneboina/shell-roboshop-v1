@@ -15,16 +15,21 @@ if [ $user_id -ne 0 ]; then
     exit 1
 fi
 
+timestamp(){
+    date "+%F %T"
+}
+
 validate(){
     exit_status=$1
     description=$2
     if [ $exit_status -ne 0 ]; then
-        echo -e "${description}..${R}FAILED${N}" | tee -a $logs_file
+        echo -e "$(timestamp) [ERROR] ${description}..${R}FAILED${N}" | tee -a $logs_file
         exit 1
     else
-        echo -e "${description}..${G}SUCCESS${N}" | tee -a $logs_file
+        echo -e "$(timestamp) [INFO] ${description}..${G}SUCCESS${N}" | tee -a $logs_file
     fi
 }
+echo "$(timestamp) [INFO] ==== Script Started Execution ====" | tee -a $logs_file
 
 cp mongodb.repo /etc/yum.repos.d/mongodb.repo 
 validate $? "Adding mongo repo"
@@ -41,4 +46,7 @@ validate $? "updating remote connections to mongodb"
 
 systemctl restart mongod &>> $logs_file
 validate $? "Restart mongodb service"
+
+echo "$(timestamp) [INFO] Script completed in $SECONDS seconds"
+echo "$(timestamp) [INFO] ==== Script completed Execution ====" | tee -a $logs_file
 
