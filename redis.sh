@@ -15,6 +15,10 @@ if [ $user_id -ne 0 ]; then
     exit 1
 fi
 
+timestamp(){
+    date "+%F %T"
+}
+
 validate(){
     exit_status=$1
     description=$2
