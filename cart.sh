@@ -57,42 +57,25 @@ validate $? "removing old code from the app directory"
 mkdir -p /app
 validate $? "creating app directory"
 
-curl -L -o /tmp/cart.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/cart-v4.zip
-validate $? "downloading cart"
+curl -L -o /tmp/cart.zip https://raw.githubusercontent.com/daws-92s/roboshop-documentation/refs/heads/main/artifacts/cart-v4.zip &>> $logs_file
+validate $? "Downloading cart"
 
 cd /app
 unzip /tmp/cart.zip &>> $logs_file
-validate $? "unzipping cart"
+validate $? "Unzipping cart"
 
 npm install &>> $logs_file
-validate $? "installing dependencies"
+validate $? "Installing dependencies"
 
 sed -i "s/DOMAIN_NAME/$domain_name/g" "$script_dir/cart.service"
 cp "$script_dir/cart.service" /etc/systemd/system/cart.service
-validate $? "creating cart service file"
 
 systemctl daemon-reload &>> $logs_file
 systemctl enable cart &>> $logs_file
 systemctl start cart &>> $logs_file
-validate $? "Enable and start service"
+validate $? "Starting and enabling cart"
 
-cp "$script_dir/mongodb.repo" /etc/yum.repos.d/mongodb.repo
-validate $? "Adding mongodb repo"
-
-dnf install mongodb-mongosh -y &>> $logs_file
-validate $? "Downloading mongodb client"
-
-product_count=$(mongosh --host mongodb.$domain_name --quiet --eval 'db.getSiblingDB("cart").products.countDocuments()')
-validate $? "Connecting to mongodb"
-
-if [ product_count -eq 0 ]; then
-    mongosh --host mongodb.$domain_name </app/db/master-data.js &>> $logs_file
-    validate $? "Loading the data"
-else
-    echo -e "$(timestamp) [INFO] Products already exists.. ${Y}SKIPPING${N}"
-fi
-
-systemctl restart cart &>> $logs_file
+systemctl restart cart
 validate $? "Restarting cart"
 
 echo "$(timestamp) [INFO] Script completed in $SECONDS seconds"

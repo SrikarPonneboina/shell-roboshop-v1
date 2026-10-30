@@ -65,8 +65,8 @@ validate $? "Creating virtual environment"
 /app/.venv/bin/pip install -r requirements.txt &>> $logs_file
 validate $? "Installing dependencies"
 
-sed -i "s/DOMAIN_NAME/$domain_name/g" "$scripts_dir/payment.service"
-cp "$scripts_dir/payment.service" /etc/systemd/system/payment.service
+sed -i "s/DOMAIN_NAME/$domain_name/g" "$script_dir/payment.service"
+cp "$script_dir/payment.service" /etc/systemd/system/payment.service
 
 systemctl daemon-reload &>> $logs_file
 systemctl enable payment &>> $logs_file
