@@ -85,7 +85,7 @@ validate $? "Downloading mongodb client"
 product_count=$(mongosh --host mongodb.$domain_name --quiet --eval 'db.getSiblingDB("catalogue").products.countDocuments()')
 validate $? "Connecting to mongodb"
 
-if [ product_count -eq 0 ]; then
+if [ $product_count -eq 0 ]; then
     mongosh --host mongodb.$domain_name </app/db/master-data.js &>> $logs_file
     validate $? "Loading the data"
 else
